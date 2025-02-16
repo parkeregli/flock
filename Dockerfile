@@ -48,9 +48,16 @@ RUN set -e && \
     CONFIGURE=false ./download_cli.sh && \
     rm download_cli.sh && \
 	 if [ ! -f "/usr/local/bin/goose" ]; then \
-        echo "Goose binary not found in /home/appuser/.local/bin"; \
+        echo "Goose binary not found"; \
         exit 1; \
     fi
+
+# Creeate config.yaml
+run mkdir /home/appuser/.config/flock && touch /home/appuser/.config/flock/config.yaml
+# Add GOOSE_MODEL and GOOSE_PROVIDER to config.yaml
+RUN echo "GOOSE_MODEL: ${GOOSE_MODEL}" >> /home/appuser/.config/flock/config.yaml
+RUN echo "GOOSE_PROVIDER: ${GOOSE_PROVIDER}" >> /home/appuser/.config/flock/config.yaml
+
 
 WORKDIR /app
 RUN chown -R appuser:appuser /app
