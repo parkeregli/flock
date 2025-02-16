@@ -25,12 +25,13 @@ RUN adduser -D appuser
 
 ARG GOOSE_MODEL="claude-3-5-sonnet-latest"
 ARG GOOSE_PROVIDER="anthropic"
+ARG GOOSE_BIN_DIR="/usr/local/bin"
 
 ENV 	GOOSE_MODEL=${GOOSE_MODEL} \
 		GOOSE_PROVIDER=${GOOSE_PROVIDER} \
+		GOOSE_BIN_DIR=${GOOSE_BIN_DIR} \
 		HOME="/home/appuser" \
 		PORT=3000 \
-		PATH="/home/appuser/.local/bin:${PATH}"
 
 # Install certificates
 # Install required dependencies
@@ -47,7 +48,7 @@ RUN mkdir -p /home/appuser/.local/bin
 
 # Install goose with explicit error checking
 RUN set -e && \
-    echo "Installing goose with model: ${GOOSE_MODEL}, provider: ${GOOSE_PROVIDER}" && \
+    echo "Installing goose with model: ${GOOSE_MODEL}, provider: ${GOOSE_PROVIDER}, bin_dir: ${GOOSE_BIN_DIR}" && \
     curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh > download_cli.sh && \
     chmod +x download_cli.sh && \
     CONFIGURE=false ./download_cli.sh && \
@@ -57,7 +58,7 @@ RUN set -e && \
         exit 1; \
     fi && \
     echo "Testing goose binary..." && \
-    /home/appuser/.local/bin/goose --version
+	 goose --version
 
 WORKDIR /app
 USER root
