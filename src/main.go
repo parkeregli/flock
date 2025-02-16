@@ -8,7 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	//"os/exec"
+	"os/exec"
 )
 
 func cloneRepository(repoURL string) error {
@@ -25,24 +25,10 @@ func cloneRepository(repoURL string) error {
 		}
 	}()
 
-	/*
-		// Get GitHub access token from environment variable
-		accessToken := os.Getenv("GITHUB_TOKEN")
-		if accessToken == "" {
-			return fmt.Errorf("GITHUB_TOKEN environment variable is not set")
-		}
-	*/
-
 	// Clone options with authentication
 	cloneOptions := &git.CloneOptions{
 		URL:      repoURL,
 		Progress: os.Stdout,
-		/*
-			Auth: &github_http.BasicAuth{
-				Username: "git", // This can be anything except empty string
-				Password: accessToken,
-			},
-		*/
 	}
 
 	// Clone the repository
@@ -128,18 +114,16 @@ func main() {
 				instructions := issuePayload.Issue.Body
 				log.Printf("Instructions: %s", instructions)
 
-				/*
-					// Run Goose session
-					cmd := exec.Command("goose", "-d", tempDir, "-i", instructions)
-					cmd.Stdout = os.Stdout
-					cmd.Stderr = os.Stderr
+				// Run Goose session
+				cmd := exec.Command("goose", "-d", tempDir, "-i", instructions)
+				cmd.Stdout = os.Stdout
+				cmd.Stderr = os.Stderr
 
-					if err := cmd.Run(); err != nil {
-						log.Printf("Error running Goose session: %v", err)
-						http.Error(w, "Internal server error", http.StatusInternalServerError)
-						return
-					}
-				*/
+				if err := cmd.Run(); err != nil {
+					log.Printf("Error running Goose session: %v", err)
+					http.Error(w, "Internal server error", http.StatusInternalServerError)
+					return
+				}
 
 				// Clean up
 				if err := os.RemoveAll(tempDir); err != nil {
