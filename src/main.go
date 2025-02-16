@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/go-git/go-git/v5"
-	github_http "github.com/go-git/go-git/v5/plumbing/transport/http"
+	//github_http "github.com/go-git/go-git/v5/plumbing/transport/http"
 	"github.com/go-playground/webhooks/v6/github"
 	"log"
 	"net/http"
@@ -25,20 +25,24 @@ func cloneRepository(repoURL string) error {
 		}
 	}()
 
-	// Get GitHub access token from environment variable
-	accessToken := os.Getenv("GITHUB_TOKEN")
-	if accessToken == "" {
-		return fmt.Errorf("GITHUB_TOKEN environment variable is not set")
-	}
+	/*
+		// Get GitHub access token from environment variable
+		accessToken := os.Getenv("GITHUB_TOKEN")
+		if accessToken == "" {
+			return fmt.Errorf("GITHUB_TOKEN environment variable is not set")
+		}
+	*/
 
 	// Clone options with authentication
 	cloneOptions := &git.CloneOptions{
 		URL:      repoURL,
 		Progress: os.Stdout,
-		Auth: &github_http.BasicAuth{
-			Username: "git", // This can be anything except empty string
-			Password: accessToken,
-		},
+		/*
+			Auth: &github_http.BasicAuth{
+				Username: "git", // This can be anything except empty string
+				Password: accessToken,
+			},
+		*/
 	}
 
 	// Clone the repository
@@ -77,6 +81,7 @@ func main() {
 	http.HandleFunc("/webhook", func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Received webhook request from GitHub: %s", r.Method)
 		payload, err := hook.Parse(r, github.IssuesEvent)
+
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
