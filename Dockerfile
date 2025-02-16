@@ -51,7 +51,7 @@ RUN set -e && \
 
 # Creeate config.yaml
 run mkdir /root/.config
-run mkdir /root/.config/flock && touch /root/.config/flock/config.yaml
+run mkdir /root/.config/goose && touch /root/.config/goose/config.yaml
 # Add GOOSE_MODEL and GOOSE_PROVIDER to config.yaml
 RUN echo "GOOSE_MODEL: ${GOOSE_MODEL}" >> /root/.config/flock/config.yaml
 RUN echo "GOOSE_PROVIDER: ${GOOSE_PROVIDER}" >> /root/.config/flock/config.yaml
