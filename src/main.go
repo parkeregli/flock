@@ -121,17 +121,20 @@ func main() {
 
 				// Get the issue body
 				instructions := issuePayload.Issue.Body
+				log.Printf("Instructions: %s", instructions)
 
-				// Run Goose session
-				cmd := exec.Command("goose", "-d", tempDir, "-i", instructions)
-				cmd.Stdout = os.Stdout
-				cmd.Stderr = os.Stderr
+				/*
+					// Run Goose session
+					cmd := exec.Command("goose", "-d", tempDir, "-i", instructions)
+					cmd.Stdout = os.Stdout
+					cmd.Stderr = os.Stderr
 
-				if err := cmd.Run(); err != nil {
-					log.Printf("Error running Goose session: %v", err)
-					http.Error(w, "Internal server error", http.StatusInternalServerError)
-					return
-				}
+					if err := cmd.Run(); err != nil {
+						log.Printf("Error running Goose session: %v", err)
+						http.Error(w, "Internal server error", http.StatusInternalServerError)
+						return
+					}
+				*/
 
 				// Clean up
 				if err := os.RemoveAll(tempDir); err != nil {
