@@ -1,0 +1,24 @@
+# Environment variables
+.env
+
+# Generated files
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE directories
+.idea/
+.vscode/
+
+# Build directories
+bin/
+dist/
+build/
+
+# Dependencies
+/vendor/
+
+# Docker volumes
+docker-volumes/
