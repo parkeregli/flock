@@ -1,10 +1,3 @@
-ARG GOOSE_MODEL
-ARG GOOSE_PROVIDER
-ARG GOOSE_BIN_DIR
-
-ENV GOOSE_MODEL=${GOOSE_MODEL}
-ENV GOOSE_PROVIDER=${GOOSE_PROVIDER}
-ENV GOOSE_BIN_DIR=${GOOSE_BIN_DIR}
 # Build stage for Go application
 FROM golang:1.22-alpine AS builder
 
@@ -28,6 +21,13 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /app/flock ./src/main.go
 # Final stage
 FROM node:lts-bookworm-slim
 
+ARG GOOSE_MODEL
+ARG GOOSE_PROVIDER
+ARG GOOSE_BIN_DIR
+
+ENV GOOSE_MODEL=${GOOSE_MODEL}
+ENV GOOSE_PROVIDER=${GOOSE_PROVIDER}
+ENV GOOSE_BIN_DIR=${GOOSE_BIN_DIR}
 # Install certificates
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 
