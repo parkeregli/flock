@@ -75,6 +75,7 @@ func main() {
 	}
 
 	http.HandleFunc("/webhook", func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("Received webhook request from GitHub: %s", r.Method)
 		payload, err := hook.Parse(r, github.IssuesEvent)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
