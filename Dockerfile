@@ -40,8 +40,6 @@ RUN apk add --no-cache \
     bash \
     ca-certificates
 
-USER appuser
-
 WORKDIR /home/appuser
 
 RUN mkdir -p /home/appuser/.local/bin
@@ -61,7 +59,6 @@ RUN set -e && \
 	 goose --version
 
 WORKDIR /app
-USER root
 RUN chown -R appuser:appuser /app
 
 # Copy the binary from builder
