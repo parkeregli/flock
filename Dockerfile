@@ -19,7 +19,19 @@ COPY src/ ./src/
 RUN CGO_ENABLED=0 GOOS=linux go build -o /app/flock ./src/main.go
 
 # Final stage
-FROM alpine:latest
+FROM node:lts-alpine
+
+# Install curl
+RUN apk add --no-cache curl
+
+# Create non-root user
+RUN addgroup -S flock && adduser -S flock -G flock
+
+# Switch to non-root user
+USER flock
+
+# Install goose
+RUN curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | CONFIGURE=false bash
 
 # Install ca-certificates for HTTPS
 RUN apk --no-cache add ca-certificates
