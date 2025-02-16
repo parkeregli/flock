@@ -51,7 +51,7 @@ RUN set -e && \
     chmod +x download_cli.sh && \
     CONFIGURE=false ./download_cli.sh && \
     rm download_cli.sh && \
-	 if [ ! -f "/home/appuser/.local/bin/goose" ]; then \
+	 if [ ! -f "/usr/local/bin/goose" ]; then \
         echo "Goose binary not found in /home/appuser/.local/bin"; \
         exit 1; \
     fi && \
