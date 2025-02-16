@@ -57,7 +57,7 @@ RUN set -e && \
         exit 1; \
     fi && \
     echo "Testing goose binary..." && \
-    goose --version
+    /home/appuser/.local/bin/goose --version
 
 WORKDIR /app
 USER root
