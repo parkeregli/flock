@@ -33,7 +33,7 @@ ENV GOOSE_BIN_DIR=${GOOSE_BIN_DIR}
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # Install curl
-RUN apt-get install -y curl
+RUN apk --no-cache add curl
 
 # Install goose with explicit error checking
 RUN set -e && \
