@@ -32,7 +32,7 @@ ENV GOOSE_BIN_DIR=${GOOSE_BIN_DIR}
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # Install goose
-RUN curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | CONFIGURE=false bash
+RUN curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | CONFIGURE=false GOOSE_MODEL=${GOOSE_MODEL} GOOSE_PROVIDER=${GOOSE_PROVIDER} GOOSE_BIN_DIR=${GOOSE_BIN_DIR} bash
 
 WORKDIR /app
 
