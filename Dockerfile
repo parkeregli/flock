@@ -47,7 +47,7 @@ RUN mkdir -p /home/appuser/.local/bin
 
 # Install goose with explicit error checking
 RUN set -e && \
-    echo "Installing goose with model: ${GOOSE_MODEL}, provider: ${GOOSE_PROVIDER} && \
+    echo "Installing goose with model: ${GOOSE_MODEL}, provider: ${GOOSE_PROVIDER}" && \
     curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh > download_cli.sh && \
     chmod +x download_cli.sh && \
     CONFIGURE=false ./download_cli.sh && \
