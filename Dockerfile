@@ -30,9 +30,6 @@ USER flock
 # Install goose
 RUN curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | CONFIGURE=false bash
 
-# Install ca-certificates for HTTPS
-RUN apk --no-cache add ca-certificates
-
 WORKDIR /app
 
 # Copy the binary from builder
