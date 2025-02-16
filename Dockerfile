@@ -19,10 +19,7 @@ COPY src/ ./src/
 RUN CGO_ENABLED=0 GOOS=linux go build -o /app/flock ./src/main.go
 
 # Final stage
-FROM node:lts-alpine
-
-# Install curl
-RUN apk add --no-cache curl
+FROM node:lts-bookworm-slim
 
 # Create non-root user
 RUN addgroup -S flock && adduser -S flock -G flock
