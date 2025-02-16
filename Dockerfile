@@ -52,7 +52,12 @@ RUN set -e && \
     chmod +x download_cli.sh && \
     CONFIGURE=false ./download_cli.sh && \
     rm download_cli.sh && \
-    if [ ! -f "/home/appuser/.local/bin/goose" ]; then echo "Goose installation failed"; exit 1; fi
+	 if [ ! -f "/home/appuser/.local/bin/goose" ]; then \
+        echo "Goose binary not found in /home/appuser/.local/bin"; \
+        exit 1; \
+    fi && \
+    echo "Testing goose binary..." && \
+    goose --version
 
 WORKDIR /app
 USER root
