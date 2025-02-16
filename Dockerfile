@@ -19,7 +19,7 @@ COPY src/ ./src/
 RUN CGO_ENABLED=0 GOOS=linux go build -o /app/flock ./src/main.go
 
 # Final stage
-FROM node:lts-bookworm
+FROM node:lts-alpine
 
 ARG GOOSE_MODEL
 ARG GOOSE_PROVIDER
@@ -30,9 +30,11 @@ ENV GOOSE_PROVIDER=${GOOSE_PROVIDER}
 ENV GOOSE_BIN_DIR=${GOOSE_BIN_DIR}
 
 # Install certificates
-RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
-
-RUN apt-get install -y dbus
+# Install required dependencies
+RUN apk add --no-cache \
+    curl \
+    bash \
+    ca-certificates
 
 # Install goose with explicit error checking
 RUN set -e && \
