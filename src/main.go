@@ -113,8 +113,21 @@ func main() {
 				instructions := issuePayload.Issue.Body
 				log.Printf("Instructions: %s", instructions)
 
+				githubToken := os.Getenv("GITHUB_TOKEN")
+				if githubToken == "" {
+					log.Fatal("GITHUB_TOKEN environment variable is not set")
+				}
+
+				gooseCommand := fmt.Sprintf("goose session --with-extension 'GITHUB_PERSONAL_ACCESS_TOKEN=%s npx -y @modelcontextprotocol/server-github' --with-builtin 'developer'", githubToken)
+
 				// Run Goose session
-				cmd := exec.Command("goose", "-d", tempDir, "-i", instructions)
+				err = os.Chdir(tempDir)
+				if err != nil {
+					log.Printf("Error changing directory: %v", err)
+					http.Error(w, "Internal server error", http.StatusInternalServerError)
+					return
+				}
+				cmd := exec.Command("bash", "-c", gooseCommand)
 				cmd.Stdout = os.Stdout
 				cmd.Stderr = os.Stderr
 
