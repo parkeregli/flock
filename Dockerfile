@@ -28,8 +28,12 @@ ARG GOOSE_BIN_DIR
 ENV GOOSE_MODEL=${GOOSE_MODEL}
 ENV GOOSE_PROVIDER=${GOOSE_PROVIDER}
 ENV GOOSE_BIN_DIR=${GOOSE_BIN_DIR}
+
 # Install certificates
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+
+# Install curl
+RUN apt-get install -y curl
 
 # Install goose with explicit error checking
 RUN set -e && \
