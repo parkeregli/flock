@@ -53,11 +53,11 @@ RUN set -e && \
     fi
 
 # Creeate config.yaml
-run mkdir /home/appuser/.config
-run mkdir /home/appuser/.config/flock && touch /home/appuser/.config/flock/config.yaml
+run mkdir /root/.config
+run mkdir /root/.config/flock && touch /root/.config/flock/config.yaml
 # Add GOOSE_MODEL and GOOSE_PROVIDER to config.yaml
-RUN echo "GOOSE_MODEL: ${GOOSE_MODEL}" >> /home/appuser/.config/flock/config.yaml
-RUN echo "GOOSE_PROVIDER: ${GOOSE_PROVIDER}" >> /home/appuser/.config/flock/config.yaml
+RUN echo "GOOSE_MODEL: ${GOOSE_MODEL}" >> /root/.config/flock/config.yaml
+RUN echo "GOOSE_PROVIDER: ${GOOSE_PROVIDER}" >> /root/.config/flock/config.yaml
 
 WORKDIR /app
 RUN chown -R appuser:appuser /app
