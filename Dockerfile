@@ -40,10 +40,6 @@ RUN apk add --no-cache \
     bash \
     ca-certificates
 
-WORKDIR /home/appuser
-
-RUN mkdir -p /home/appuser/.local/bin
-
 # Install goose with explicit error checking
 RUN set -e && \
     echo "Installing goose with model: ${GOOSE_MODEL}, provider: ${GOOSE_PROVIDER}, bin_dir: ${GOOSE_BIN_DIR}" && \
@@ -54,9 +50,7 @@ RUN set -e && \
 	 if [ ! -f "/usr/local/bin/goose" ]; then \
         echo "Goose binary not found in /home/appuser/.local/bin"; \
         exit 1; \
-    fi && \
-    echo "Testing goose binary..." && \
-	 goose --version
+    fi
 
 WORKDIR /app
 RUN chown -R appuser:appuser /app
