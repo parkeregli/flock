@@ -28,7 +28,6 @@ ARG GOOSE_BIN_DIR="/usr/local/bin"
 ENV 	GOOSE_MODEL=${GOOSE_MODEL} \
 		GOOSE_PROVIDER=${GOOSE_PROVIDER} \
 		GOOSE_BIN_DIR=${GOOSE_BIN_DIR} \
-		HOME="/home/appuser" \
 		PORT=3000
 
 # Install certificates
