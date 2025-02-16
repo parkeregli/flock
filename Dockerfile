@@ -21,6 +21,9 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /app/flock ./src/main.go
 # Final stage
 FROM node:lts-bookworm-slim
 
+# Install certificates
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+
 # Create non-root user for debian
 RUN groupadd --system flock && useradd --system --gid flock flock
 
