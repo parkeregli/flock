@@ -4,15 +4,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+        - GOOSE_MODEL=${GOOSE_MODEL}
+        - GOOSE_PROVIDER=${GOOSE_PROVIDER}
+        - GOOSE_BIN_DIR=/usr/local/bin
     ports:
       - "${PORT:-3000}:3000"
     environment:
       - PORT=${PORT:-3000}
       - WEBHOOK_SECRET=${WEBHOOK_SECRET}
       - GITHUB_TOKEN=${GITHUB_TOKEN}
-      - GOOSE_MODEL=${GOOSE_MODEL}
-      - GOOSE_PROVIDER=${GOOSE_PROVIDER}
-      - GOOSE_BIN_DIR=/usr/local/bin
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
     restart: unless-stopped
     healthcheck:

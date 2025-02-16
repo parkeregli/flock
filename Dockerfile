@@ -24,12 +24,6 @@ FROM node:lts-bookworm-slim
 # Install certificates
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 
-# Create non-root user for debian
-RUN groupadd --system flock && useradd --system --gid flock flock
-
-# Switch to non-root user
-USER flock
-
 # Install goose
 RUN curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | CONFIGURE=false bash
 
