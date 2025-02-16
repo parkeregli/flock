@@ -32,7 +32,7 @@ ENV GOOSE_BIN_DIR=${GOOSE_BIN_DIR}
 # Install certificates
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get install -y libdbus-1-3
+RUN apt-get install -y dbus
 
 # Install goose with explicit error checking
 RUN set -e && \
