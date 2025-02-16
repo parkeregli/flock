@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 )
 
 func cloneRepository(repoURL string) error {
@@ -89,10 +90,10 @@ func main() {
 				return
 			}
 
-			// Check for "ai" tag
+			// Check for "AI" tag
 			hasAITag := false
 			for _, label := range issuePayload.Issue.Labels {
-				if label.Name == "ai" {
+				if label.Name == "AI" {
 					hasAITag = true
 					break
 				}
@@ -103,13 +104,38 @@ func main() {
 					issuePayload.Issue.Number,
 					issuePayload.Repository.CloneURL)
 
-				/*
-					if err := cloneRepository(issuePayload.Repository.CloneURL); err != nil {
-						log.Printf("Error processing webhook: %v", err)
-						http.Error(w, "Internal server error", http.StatusInternalServerError)
-						return
-					}
-				*/
+				// Clone the repository
+				tempDir, err := os.MkdirTemp("", "git-clone-*")
+				if err != nil {
+					log.Printf("Error creating temp directory: %v", err)
+					http.Error(w, "Internal server error", http.StatusInternalServerError)
+					return
+				}
+
+				if err := cloneRepository(issuePayload.Repository.CloneURL); err != nil {
+					log.Printf("Error cloning repository: %v", err)
+					http.Error(w, "Internal server error", http.StatusInternalServerError)
+					return
+				}
+
+				// Get the issue body
+				instructions := issuePayload.Issue.Body
+
+				// Run Goose session
+				cmd := exec.Command("goose", "-d", tempDir, "-i", instructions)
+				cmd.Stdout = os.Stdout
+				cmd.Stderr = os.Stderr
+
+				if err := cmd.Run(); err != nil {
+					log.Printf("Error running Goose session: %v", err)
+					http.Error(w, "Internal server error", http.StatusInternalServerError)
+					return
+				}
+
+				// Clean up
+				if err := os.RemoveAll(tempDir); err != nil {
+					log.Printf("Warning: Failed to clean up temporary directory %s: %v", tempDir, err)
+				}
 			}
 		}
 	})
