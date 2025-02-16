@@ -29,7 +29,8 @@ ARG GOOSE_PROVIDER="anthropic"
 ENV 	GOOSE_MODEL=${GOOSE_MODEL} \
 		GOOSE_PROVIDER=${GOOSE_PROVIDER} \
 		HOME="/home/appuser" \
-		PORT=3000
+		PORT=3000 \
+		PATH="${HOME}/.local/bin:${PATH}"
 
 # Install certificates
 # Install required dependencies
@@ -41,6 +42,8 @@ RUN apk add --no-cache \
 USER appuser
 
 WORKDIR /home/appuser
+
+RUN mkdir -p /home/appuser/.local/bin
 
 # Install goose with explicit error checking
 RUN set -e && \
