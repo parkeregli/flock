@@ -21,8 +21,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /app/flock ./src/main.go
 # Final stage
 FROM node:lts-bookworm-slim
 
-# Create non-root user
-RUN addgroup -S flock && adduser -S flock -G flock
+# Create non-root user for debian
+RUN addgroup --system flock && adduser --system flock -G flock
 
 # Switch to non-root user
 USER flock
