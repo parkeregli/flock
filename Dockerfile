@@ -21,13 +21,15 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /app/flock ./src/main.go
 # Final stage
 FROM node:lts-alpine
 
-ARG GOOSE_MODEL
-ARG GOOSE_PROVIDER
-ARG GOOSE_BIN_DIR
+RUN adduser -D appuser
 
-ENV GOOSE_MODEL=${GOOSE_MODEL}
-ENV GOOSE_PROVIDER=${GOOSE_PROVIDER}
-ENV GOOSE_BIN_DIR=${GOOSE_BIN_DIR}
+ARG GOOSE_MODEL="claude-3-5-sonnet-latest"
+ARG GOOSE_PROVIDER="anthropic"
+
+ENV 	GOOSE_MODEL=${GOOSE_MODEL} \
+		GOOSE_PROVIDER=${GOOSE_PROVIDER} \
+		HOME="/home/appuser" \
+		PORT=3000
 
 # Install certificates
 # Install required dependencies
@@ -35,6 +37,10 @@ RUN apk add --no-cache \
     curl \
     bash \
     ca-certificates
+
+USER appuser
+
+WORKDIR /home/appuser
 
 # Install goose with explicit error checking
 RUN set -e && \
@@ -46,16 +52,16 @@ RUN set -e && \
     if [ ! -f "${GOOSE_BIN_DIR}/goose" ]; then echo "Goose installation failed"; exit 1; fi
 
 WORKDIR /app
+USER root
+RUN chown -R appuser:appuser /app
 
 # Copy the binary from builder
 COPY --from=builder /app/flock .
 
+USER appuser
+
 # Expose the default port
 EXPOSE 3000
-
-# Set environment variables
-ENV PORT=3000
-ENV PATH="/usr/bin:${PATH}"
 
 # Run the application
 CMD ["./flock"]
