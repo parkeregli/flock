@@ -30,7 +30,7 @@ ENV 	GOOSE_MODEL=${GOOSE_MODEL} \
 		GOOSE_PROVIDER=${GOOSE_PROVIDER} \
 		HOME="/home/appuser" \
 		PORT=3000 \
-		PATH="${HOME}/.local/bin:${PATH}"
+		PATH="/home/appuser/.local/bin:${PATH}"
 
 # Install certificates
 # Install required dependencies
