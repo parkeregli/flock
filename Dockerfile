@@ -50,11 +50,11 @@ RUN set -e && \
     fi
 
 # Creeate config.yaml
-run mkdir /root/.config
-run mkdir /root/.config/goose && touch /root/.config/goose/config.yaml
+run mkdir ~/.config
+run mkdir ~/.config/goose && touch ~/.config/goose/config.yaml
 # Add GOOSE_MODEL and GOOSE_PROVIDER to config.yaml
-RUN echo "GOOSE_MODEL: ${GOOSE_MODEL}" >> /root/.config/goose/config.yaml
-RUN echo "GOOSE_PROVIDER: ${GOOSE_PROVIDER}" >> /root/.config/goose/config.yaml
+RUN echo "GOOSE_MODEL: ${GOOSE_MODEL}" >> ~/.config/goose/config.yaml
+RUN echo "GOOSE_PROVIDER: ${GOOSE_PROVIDER}" >> ~/.config/goose/config.yaml
 
 WORKDIR /app
 
