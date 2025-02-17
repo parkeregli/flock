@@ -19,7 +19,7 @@ COPY src/ ./src/
 RUN CGO_ENABLED=0 GOOS=linux go build -o /app/flock ./src/main.go
 
 # Final stage
-FROM node:lts-bookworm
+FROM node:lts-alpine
 
 ARG GOOSE_MODEL="claude-3-5-sonnet-latest"
 ARG GOOSE_PROVIDER="anthropic"
