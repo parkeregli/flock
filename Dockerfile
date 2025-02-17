@@ -42,7 +42,7 @@ RUN set -e && \
     echo "Installing goose with model: ${GOOSE_MODEL}, provider: ${GOOSE_PROVIDER}, bin_dir: ${GOOSE_BIN_DIR}" && \
     curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh > download_cli.sh && \
     chmod +x download_cli.sh && \
-    CONFIGURE=false ./download_cli.sh && \
+    CONFIGURE=false bash ./download_cli.sh && \
     rm download_cli.sh && \
 	 if [ ! -f "/usr/local/bin/goose" ]; then \
         echo "Goose binary not found"; \
