@@ -35,7 +35,11 @@ ENV 	GOOSE_MODEL=${GOOSE_MODEL} \
 RUN apk add --no-cache \
     curl \
     bash \
-    ca-certificates
+    bzip2 \
+    libxcb1 \
+    libdbus-1-3 \
+    ca-certificates \
+    && rm -rf /var/cache/apk/*
 
 # Install goose with explicit error checking
 RUN set -e && \
