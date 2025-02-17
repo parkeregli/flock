@@ -36,8 +36,6 @@ RUN apk add --no-cache \
     curl \
     bash \
     bzip2 \
-    libxcb1 \
-    libdbus-1-3 \
     ca-certificates \
     && rm -rf /var/cache/apk/*
 
