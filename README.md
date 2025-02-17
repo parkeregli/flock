@@ -112,11 +112,3 @@ The project structure is organized as follows:
 ├── .env.example         # Example environment configuration
 └── README.md           # This file
 ```
-
-## License
-
-[Add your license information here]
-
-## Contributing
-
-[Add contribution guidelines here]
