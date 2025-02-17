@@ -19,7 +19,7 @@ COPY src/ ./src/
 RUN CGO_ENABLED=0 GOOS=linux go build -o /app/flock ./src/main.go
 
 # Final stage
-FROM node:lts-alpine
+FROM node:slim
 
 ARG GOOSE_MODEL="claude-3-5-sonnet-latest"
 ARG GOOSE_PROVIDER="anthropic"
@@ -30,18 +30,16 @@ ENV 	GOOSE_MODEL=${GOOSE_MODEL} \
 		GOOSE_BIN_DIR=${GOOSE_BIN_DIR} \
 		PORT=3000
 
-# Install certificates
-# Install required dependencies
-RUN apk add --no-cache \
+
+RUN apt-get update && apt-get install -y \
     curl \
     bash \
     bzip2 \
-    libxcb \
-    dbus-libs \
-    libstdc++ \
-    libgcc \
+    libxcb1 \
+    libdbus-1-3 \
+    libstdc++6 \
     ca-certificates \
-    && rm -rf /var/cache/apk/*
+    && rm -rf /var/lib/apt/lists/*
 
 # Install goose with explicit error checking
 RUN set -e && \
@@ -58,8 +56,6 @@ run mkdir ~/.config/goose && touch ~/.config/goose/config.yaml
 # Add GOOSE_MODEL and GOOSE_PROVIDER to config.yaml
 RUN echo "GOOSE_MODEL: ${GOOSE_MODEL}" >> ~/.config/goose/config.yaml
 RUN echo "GOOSE_PROVIDER: ${GOOSE_PROVIDER}" >> ~/.config/goose/config.yaml
-
-RUN touch /usr/local/bin/
 
 WORKDIR /app
 
