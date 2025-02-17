@@ -118,9 +118,8 @@ func main() {
 					log.Fatal("GITHUB_TOKEN environment variable is not set")
 				}
 
-				gooseCommand := fmt.Sprintf("goose run --with-extension 'GITHUB_PERSONAL_ACCESS_TOKEN=%s npx -y @modelcontextprotocol/server-github' --with-builtin 'developer' -i '%s'", githubToken, instructions)
+				gooseCommand := fmt.Sprintf("goose run --with-extension 'GITHUB_PERSONAL_ACCESS_TOKEN=%s npx -y @modelcontextprotocol/server-github' --with-builtin 'developer' -t '%s'", githubToken, instructions)
 
-				// Run Goose session
 				err = os.Chdir(tempDir)
 				if err != nil {
 					log.Printf("Error changing directory: %v", err)
