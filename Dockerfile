@@ -19,7 +19,7 @@ COPY src/ ./src/
 RUN CGO_ENABLED=0 GOOS=linux go build -o /app/flock ./src/main.go
 
 # Final stage
-FROM node:lts-alpine
+FROM node:lts-bookworm
 
 ARG GOOSE_MODEL="claude-3-5-sonnet-latest"
 ARG GOOSE_PROVIDER="anthropic"
@@ -36,6 +36,10 @@ RUN apk add --no-cache \
     curl \
     bash \
     bzip2 \
+    libxcb \
+    dbus-libs \
+    libstdc++ \
+    libgcc \
     ca-certificates \
     && rm -rf /var/cache/apk/*
 
@@ -54,6 +58,8 @@ run mkdir ~/.config/goose && touch ~/.config/goose/config.yaml
 # Add GOOSE_MODEL and GOOSE_PROVIDER to config.yaml
 RUN echo "GOOSE_MODEL: ${GOOSE_MODEL}" >> ~/.config/goose/config.yaml
 RUN echo "GOOSE_PROVIDER: ${GOOSE_PROVIDER}" >> ~/.config/goose/config.yaml
+
+RUN touch /usr/local/bin/
 
 WORKDIR /app
 
