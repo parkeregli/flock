@@ -10,14 +10,7 @@ import (
 	"os/exec"
 )
 
-func cloneRepository(repoURL string, tempDir string) error {
-	// Ensure cleanup of the temporary directory
-	defer func() {
-		if err := os.RemoveAll(tempDir); err != nil {
-			log.Printf("Warning: Failed to clean up temporary directory %s: %v", tempDir, err)
-		}
-	}()
-
+func cloneRepository(repoURL string, dir string) error {
 	// Clone options with authentication
 	cloneOptions := &git.CloneOptions{
 		URL:      repoURL,
@@ -25,14 +18,13 @@ func cloneRepository(repoURL string, tempDir string) error {
 	}
 
 	// Clone the repository
-	fmt.Printf("Cloning repository into %s...\n", tempDir)
-	_, err := git.PlainClone(tempDir, false, cloneOptions)
+	fmt.Printf("Cloning repository into %s...\n", dir)
+	_, err := git.PlainClone(dir, false, cloneOptions)
 	if err != nil {
 		return fmt.Errorf("failed to clone repository: %v", err)
 	}
 
-	fmt.Printf("\nRepository was cloned to %s\n", tempDir)
-	fmt.Println("Note: The temporary directory will be deleted when the program exits")
+	fmt.Printf("\nRepository was cloned to %s\n", dir)
 	return nil
 }
 
