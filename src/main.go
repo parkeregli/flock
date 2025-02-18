@@ -11,6 +11,11 @@ import (
 )
 
 func cloneRepository(repoURL string, dir string) error {
+	// Set up authentication by updating the URL
+	if os.Getenv("GITHUB_TOKEN") != "" {
+		repoURL = fmt.Sprintf("https://flock[bot]:%s@%s", os.Getenv("GITHUB_TOKEN"), repoURL)
+	}
+
 	// Clone options with authentication
 	cloneOptions := &git.CloneOptions{
 		URL:      repoURL,
@@ -22,16 +27,6 @@ func cloneRepository(repoURL string, dir string) error {
 	_, err := git.PlainClone(dir, false, cloneOptions)
 	if err != nil {
 		return fmt.Errorf("failed to clone repository: %v", err)
-	}
-
-	//Update git config
-	gitConfigCommand := fmt.Sprintf("cd %s && git config --global user.email 'flock[bot]@noreply.github.com' && git config --global user.name 'flock[bot]'", dir)
-	cmd := exec.Command("bash", "-c", gitConfigCommand)
-	cmd.Dir = dir
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("failed to update git config: %v", err)
 	}
 
 	fmt.Printf("\nRepository was cloned to %s\n", dir)
