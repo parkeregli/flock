@@ -24,6 +24,15 @@ func cloneRepository(repoURL string, dir string) error {
 		return fmt.Errorf("failed to clone repository: %v", err)
 	}
 
+	//Update git config
+	cmd := exec.Command("bash", "-c", fmt.Sprintf("cd %s && git config --global user.email \"flock[bot]@noreply.github.com\" && git config --global user.name \"flock[bot]\"", dir))
+	cmd.Dir = dir
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("failed to update git config: %v", err)
+	}
+
 	fmt.Printf("\nRepository was cloned to %s\n", dir)
 	return nil
 }
@@ -118,19 +127,6 @@ func main() {
 
 				if err := cmd.Run(); err != nil {
 					log.Printf("Error running Goose session: %v", err)
-					http.Error(w, "Internal server error", http.StatusInternalServerError)
-					return
-				}
-
-				// Push changes
-				gitCommand := fmt.Sprintf("cd %s && git add . && git commit -m 'FLOCK: #%d' && git push", tempDir, issuePayload.Issue.Number)
-				cmd = exec.Command("bash", "-c", gitCommand)
-				cmd.Dir = tempDir
-				cmd.Stdout = os.Stdout
-				cmd.Stderr = os.Stderr
-
-				if err := cmd.Run(); err != nil {
-					log.Printf("Error pushing changes: %v", err)
 					http.Error(w, "Internal server error", http.StatusInternalServerError)
 					return
 				}
