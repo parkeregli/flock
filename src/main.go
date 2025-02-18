@@ -13,7 +13,7 @@ import (
 func cloneRepository(repoURL string, dir string) error {
 	// Set up authentication by updating the URL
 	if os.Getenv("GITHUB_TOKEN") != "" {
-		repoURL = fmt.Sprintf("https://flock[bot]:%s@%s", os.Getenv("GITHUB_TOKEN"), repoURL)
+		repoURL = fmt.Sprintf("https://x-access-token:%s@%s", os.Getenv("GITHUB_TOKEN"), repoURL)
 	}
 
 	// Clone options with authentication
