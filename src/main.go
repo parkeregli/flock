@@ -8,12 +8,20 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 func cloneRepository(repoURL string, dir string) error {
 	// Set up authentication by updating the URL
-	if os.Getenv("GITHUB_TOKEN") != "" {
-		repoURL = fmt.Sprintf("https://x-access-token:%s@%s", os.Getenv("GITHUB_TOKEN"), repoURL)
+	if token := os.Getenv("GITHUB_TOKEN"); token != "" {
+		// Extract the host and path from the repository URL
+		// Convert HTTPS URL format to the authenticated format
+		repoURL = strings.TrimPrefix(repoURL, "https://")
+		repoURL = strings.TrimPrefix(repoURL, "git@")
+		repoURL = strings.TrimSuffix(repoURL, ".git")
+
+		// Construct the authenticated URL
+		repoURL = fmt.Sprintf("https://oauth2:%s@github.com/%s.git", token, repoURL)
 	}
 
 	// Clone options with authentication
