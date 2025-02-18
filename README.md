@@ -27,6 +27,11 @@ The service can be configured using environment variables:
 | `GITHUB_TOKEN` | GitHub access token for repository access | No | - |
 | `GITHUB_URL` | Direct repository URL for cloning (bypasses webhook mode) | No | - |
 | `PORT` | Port for the webhook server | No | 3000 |
+| `GOOSE_MODEL` | The AI model to use with Goose (e.g., gpt-4, claude-3) | Yes | - |
+| `GOOSE_PROVIDER` | The AI provider to use (e.g., OpenAI, Anthropic) | Yes | - |
+| `ANTHROPIC_API_KEY` | API key for Anthropic when using Claude models | No* | - |
+
+\* Required if using Anthropic's Claude models
 
 ## Setup
 
