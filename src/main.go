@@ -132,7 +132,7 @@ func main() {
 					return
 				}
 
-				gooseCommand := fmt.Sprintf("goose run --with-extension 'GITHUB_PERSONAL_ACCESS_TOKEN=%s npx -y @modelcontextprotocol/server-github' --with-builtin 'developer' -i 'instructions.txt'", githubToken)
+				gooseCommand := fmt.Sprintf("cd %s && goose run --with-extension 'GITHUB_PERSONAL_ACCESS_TOKEN=%s npx -y @modelcontextprotocol/server-github' --with-builtin 'developer' -i 'instructions.txt'", tempDir, githubToken)
 
 				cmd := exec.Command("bash", "-c", gooseCommand)
 				cmd.Dir = tempDir
