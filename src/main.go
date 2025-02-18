@@ -10,13 +10,7 @@ import (
 	"os/exec"
 )
 
-func cloneRepository(repoURL string) error {
-	// Create a temporary directory
-	tempDir, err := os.MkdirTemp("", "git-clone-*")
-	if err != nil {
-		return fmt.Errorf("failed to create temporary directory: %v", err)
-	}
-
+func cloneRepository(repoURL string, tempDir string) error {
 	// Ensure cleanup of the temporary directory
 	defer func() {
 		if err := os.RemoveAll(tempDir); err != nil {
@@ -32,7 +26,7 @@ func cloneRepository(repoURL string) error {
 
 	// Clone the repository
 	fmt.Printf("Cloning repository into %s...\n", tempDir)
-	_, err = git.PlainClone(tempDir, false, cloneOptions)
+	_, err := git.PlainClone(tempDir, false, cloneOptions)
 	if err != nil {
 		return fmt.Errorf("failed to clone repository: %v", err)
 	}
@@ -43,15 +37,6 @@ func cloneRepository(repoURL string) error {
 }
 
 func main() {
-	// Check if direct clone URL is provided
-	repoURL := os.Getenv("GITHUB_URL")
-	if repoURL != "" {
-		if err := cloneRepository(repoURL); err != nil {
-			log.Fatal(err)
-		}
-		return
-	}
-
 	// Set up webhook handler if no direct URL is provided
 	webhookSecret := os.Getenv("WEBHOOK_SECRET")
 	if webhookSecret == "" {
@@ -103,7 +88,7 @@ func main() {
 					return
 				}
 
-				if err := cloneRepository(issuePayload.Repository.CloneURL); err != nil {
+				if err := cloneRepository(issuePayload.Repository.CloneURL, tempDir); err != nil {
 					log.Printf("Error cloning repository: %v", err)
 					http.Error(w, "Internal server error", http.StatusInternalServerError)
 					return
