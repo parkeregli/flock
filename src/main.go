@@ -122,6 +122,19 @@ func main() {
 					return
 				}
 
+				// Push changes
+				gitCommand := fmt.Sprintf("cd %s && git add . && git commit -m 'FLOCK: #%d' && git push", tempDir, issuePayload.Issue.Number)
+				cmd = exec.Command("bash", "-c", gitCommand)
+				cmd.Dir = tempDir
+				cmd.Stdout = os.Stdout
+				cmd.Stderr = os.Stderr
+
+				if err := cmd.Run(); err != nil {
+					log.Printf("Error pushing changes: %v", err)
+					http.Error(w, "Internal server error", http.StatusInternalServerError)
+					return
+				}
+
 				// Clean up
 				if err := os.RemoveAll(tempDir); err != nil {
 					log.Printf("Warning: Failed to clean up temporary directory %s: %v", tempDir, err)
