@@ -111,7 +111,6 @@ func main() {
 
 				// Get the issue body
 				instructions := issuePayload.Issue.Body
-				log.Printf("Instructions: %s", instructions)
 
 				githubToken := os.Getenv("GITHUB_TOKEN")
 				if githubToken == "" {
@@ -126,7 +125,7 @@ func main() {
 				}
 
 				//Write instruction to file
-				err = os.WriteFile("instructions.txt", []byte(instructions), 0644)
+				err = os.WriteFile(tempDir+"/instructions.txt", []byte(instructions), 0644)
 				if err != nil {
 					log.Printf("Error writing instructions to file: %v", err)
 					http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -136,6 +135,7 @@ func main() {
 				gooseCommand := fmt.Sprintf("goose run --with-extension 'GITHUB_PERSONAL_ACCESS_TOKEN=%s npx -y @modelcontextprotocol/server-github' --with-builtin 'developer' -i 'instructions.txt'", githubToken)
 
 				cmd := exec.Command("bash", "-c", gooseCommand)
+				cmd.Dir = tempDir
 				cmd.Stdout = os.Stdout
 				cmd.Stderr = os.Stderr
 
