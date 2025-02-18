@@ -39,6 +39,8 @@ RUN apt-get update && apt-get install -y \
     libdbus-1-3 \
     libstdc++6 \
     ca-certificates \
+    git \
+    ripgrep \
     && rm -rf /var/lib/apt/lists/*
 
 # Install goose with explicit error checking
