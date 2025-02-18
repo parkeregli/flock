@@ -17,7 +17,7 @@ func cloneRepository(repoURL string, dir string) error {
 		// Extract the host and path from the repository URL
 		// Convert HTTPS URL format to the authenticated format
 		repoURL = strings.TrimPrefix(repoURL, "https://")
-		repoURL = strings.TrimPrefix(repoURL, "git@")
+		repoURL = strings.TrimPrefix(repoURL, "git@github.com:")
 		repoURL = strings.TrimSuffix(repoURL, ".git")
 
 		// Construct the authenticated URL
