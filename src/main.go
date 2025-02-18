@@ -122,13 +122,6 @@ func main() {
 					return
 				}
 
-				// Ctrl+C the Goose session
-				if err := cmd.Process.Signal(os.Interrupt); err != nil {
-					log.Printf("Error sending Ctrl+C to Goose session: %v", err)
-					http.Error(w, "Internal server error", http.StatusInternalServerError)
-					return
-				}
-
 				// Clean up
 				if err := os.RemoveAll(tempDir); err != nil {
 					log.Printf("Warning: Failed to clean up temporary directory %s: %v", tempDir, err)
