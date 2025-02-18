@@ -118,7 +118,7 @@ func main() {
 					log.Fatal("GITHUB_TOKEN environment variable is not set")
 				}
 
-				gooseCommand := fmt.Sprintf("echo '%s' | goose run --with-extension 'GITHUB_PERSONAL_ACCESS_TOKEN=%s npx -y @modelcontextprotocol/server-github' --with-builtin 'developer' -i -", instructions, githubToken)
+				gooseCommand := fmt.Sprintf("echo '%s' | goose run --with-extension 'GITHUB_PERSONAL_ACCESS_TOKEN=%s npx -y @modelcontextprotocol/server-github' --with-builtin 'developer' -i '-'", instructions, githubToken)
 
 				err = os.Chdir(tempDir)
 				if err != nil {
