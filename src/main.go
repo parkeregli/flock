@@ -118,14 +118,23 @@ func main() {
 					log.Fatal("GITHUB_TOKEN environment variable is not set")
 				}
 
-				gooseCommand := fmt.Sprintf("echo '%s' | goose run --with-extension 'GITHUB_PERSONAL_ACCESS_TOKEN=%s npx -y @modelcontextprotocol/server-github' --with-builtin 'developer' -i '-'", instructions, githubToken)
-
 				err = os.Chdir(tempDir)
 				if err != nil {
 					log.Printf("Error changing directory: %v", err)
 					http.Error(w, "Internal server error", http.StatusInternalServerError)
 					return
 				}
+
+				//Write instruction to file
+				err = os.WriteFile("instructions.txt", []byte(instructions), 0644)
+				if err != nil {
+					log.Printf("Error writing instructions to file: %v", err)
+					http.Error(w, "Internal server error", http.StatusInternalServerError)
+					return
+				}
+
+				gooseCommand := fmt.Sprintf("goose run --with-extension 'GITHUB_PERSONAL_ACCESS_TOKEN=%s npx -y @modelcontextprotocol/server-github' --with-builtin 'developer' -i 'instructions.txt'", githubToken)
+
 				cmd := exec.Command("bash", "-c", gooseCommand)
 				cmd.Stdout = os.Stdout
 				cmd.Stderr = os.Stderr
