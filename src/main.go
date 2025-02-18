@@ -25,7 +25,8 @@ func cloneRepository(repoURL string, dir string) error {
 	}
 
 	//Update git config
-	cmd := exec.Command("bash", "-c", fmt.Sprintf("cd %s && git config --global user.email \"flock[bot]@noreply.github.com\" && git config --global user.name \"flock[bot]\"", dir))
+	gitConfigCommand := fmt.Sprintf("cd %s && git config --global user.email 'flock[bot]@noreply.github.com' && git config --global user.name 'flock[bot]'", dir)
+	cmd := exec.Command("bash", "-c", gitConfigCommand)
 	cmd.Dir = dir
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
